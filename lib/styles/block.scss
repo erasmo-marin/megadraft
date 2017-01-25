@@ -1,0 +1,201 @@
+/*
+ * Copyright (c) 2016, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
+
+.block__hover {
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1) !important;
+  &:hover {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0), 0 4px 8px rgba(0,0,0,0.15);
+  }
+}
+
+.block__wrapper {
+  position: relative;
+  user-select: none;
+  background-color: #fff;
+  border-radius: 3px;
+  border: solid 1px #ddd;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.block__controls {
+  padding: 8px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+}
+
+.block__action-group {
+  color: #dedede;
+  float: right;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.block__action {
+  display: inline-block;
+  padding: 0 8px;
+  line-height: 40px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0;
+
+  &:hover {
+    color: #fff;
+  }
+
+  &__icon {
+    vertical-align: middle;
+  }
+}
+
+.block__content {
+  background-color: #eee;
+  line-height: 100px;
+  text-align: center;
+  position: relative;
+
+  &--with-padding {
+    padding: 16px;
+  }
+
+  &:before,
+  &:after {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    content: "";
+    left: 0;
+  }
+  &:before {
+    top: 0;
+  }
+  &:after {
+    bottom: 0;
+  }
+
+  video {
+    margin-top: 56px;
+    margin-bottom: 56px;
+  }
+}
+
+.block__notfound {
+  &__icon {
+    color: #999;
+    vertical-align: middle;
+    width: 64px;
+    height: 64px;
+    margin: 104px;
+  }
+}
+
+.block__data {
+  padding: 16px;
+  padding-top: 8px;
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,0.5);
+}
+
+//override semantic styles with important
+.block__input {
+  border-radius: 0px !important;
+  border: 0 !important;
+  border-bottom: 1px dashed transparent !important;
+  color: #fff !important;
+  display: block !important;
+  padding: 8px 0 !important;
+  width: 100% !important;
+  font-size: 0.75rem !important;
+  background-color: transparent !important;
+
+  &--small-padding {
+    padding: 8px 0 5px 0 !important;
+  }
+
+  &--big-text {
+    font-size: 1rem !important;
+    font-weight: bold !important;
+  }
+
+  &__row {
+    line-height: 1rem !important;
+  }
+
+  &__wrapper {
+    position: relative !important;
+  }
+  &__icon {
+    position: absolute !important;
+    top: 50% !important;
+    margin-top: -8px !important;
+    right: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  // Non-empty
+  &:hover {
+    border-color: #999 !important;
+  }
+  &:hover + svg.block__input__icon {
+    display: inline-block !important;
+  }
+
+  // Editing
+  &:focus {
+    border-color: #009ea6 !important;
+    border-style: solid !important;
+  }
+  &:focus + svg.block__input__icon {
+    display: inline-block !important;
+  }
+
+  // Empty
+  &:placeholder {
+    color: #dedede !important;
+  }
+  &--empty {
+    border-color: #ccc !important;
+
+    :hover {
+      border-color: #999 !important;
+    }
+  }
+  &--empty + svg.block__input__icon {
+    color: #dedede !important;
+    display: inline-block !important;
+  }
+
+  // Error
+  &--error,
+  &--error.block__input--empty,
+  &--error:hover {
+    border-color: #ff351e !important;
+    border-style: solid !important;
+  }
+  &--error + svg.block__input__icon {
+    color: #ff351e !important;
+    display: inline-block !important;
+  }
+  &__error-text {
+    color: #ff351e !important;
+    margin-top: 6px !important;
+    font-size: 0.75rem !important;
+  }
+}

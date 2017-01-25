@@ -20,7 +20,6 @@ import notFoundPlugin from "../plugins/not-found/plugin";
 import DEFAULT_PLUGINS from "../plugins/default";
 import DEFAULT_ACTIONS from "../actions/default";
 import DEFAULT_ENTITY_INPUTS from "../entity_inputs/default";
-import H1 from './CustomBlocks';
 import Immutable from 'immutable';
 import Draft from 'draft-js';
 

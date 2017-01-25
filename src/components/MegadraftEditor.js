@@ -20,6 +20,9 @@ import notFoundPlugin from "../plugins/not-found/plugin";
 import DEFAULT_PLUGINS from "../plugins/default";
 import DEFAULT_ACTIONS from "../actions/default";
 import DEFAULT_ENTITY_INPUTS from "../entity_inputs/default";
+import H1 from './CustomBlocks';
+import Immutable from 'immutable';
+import Draft from 'draft-js';
 
 export default class MegadraftEditor extends Component {
   constructor(props) {
@@ -47,6 +50,24 @@ export default class MegadraftEditor extends Component {
 
     this.keyBindings = this.props.keyBindings || [];
 
+    const blockRenderMap = Immutable.Map({
+        'header-1': {
+            element: 'h1'
+        },
+        'header-2': {
+            element: 'h2'
+        },
+        'header-3': {
+            element: 'h3'
+        },
+        'header-4': {
+            element: 'h4'
+        },
+        'header-5': {
+            element: 'h5'
+        }
+    });
+    this.extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
   }
 
   getValidPlugins() {
@@ -144,11 +165,13 @@ export default class MegadraftEditor extends Component {
   }
 
   mediaBlockRenderer(block) {
+    let type = block.getType();
+
     if (block.getType() !== "atomic") {
       return null;
     }
 
-    const type = block.getData().toObject().type;
+    type = block.getData().toObject().type;
 
     let plugin = this.pluginsByType[type] || this.handleBlockNotFound(block);
     if (!plugin) {
@@ -167,10 +190,23 @@ export default class MegadraftEditor extends Component {
     };
   }
 
-  blockStyleFn(contentBlock) {
+  getBlockStyle(contentBlock) {
     const type = contentBlock.getType();
-    if (type === "unstyled") {
-      return "paragraph";
+    switch (type) {
+      case "unstyled":
+        return "paragraph";
+      case "header-1":
+        return "h1";
+      case "header-2":
+        return "h2";
+      case "header-3":
+        return "h3";
+      case "header-4":
+        return "h4";
+      case "header-5":
+        return "h5";
+      default:
+        break;
     }
   }
 
@@ -206,12 +242,13 @@ export default class MegadraftEditor extends Component {
             readOnly={this.state.readOnly}
             plugins={this.plugins}
             blockRendererFn={this.mediaBlockRenderer}
-            blockStyleFn={this.blockStyleFn}
+            blockStyleFn={this.getBlockStyle}
             onTab={this.onTab}
             handleKeyCommand={this.handleKeyCommand}
             handleReturn={this.handleReturn}
             keyBindingFn={this.externalKeyBindings}
             onChange={this.onChange}
+            blockRenderMap={this.extendedBlockRenderMap}
           />
           {this.renderToolbar({
             editor: this.refs.editor,

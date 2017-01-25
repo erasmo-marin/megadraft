@@ -11,6 +11,7 @@
     position: absolute;
     display: none;
     z-index: 10;
+    transition: all 0.2s linear;
 
     &--open {
         display: block;
@@ -44,12 +45,11 @@
     }
 
     &__wrapper {
-        background-color: #181818;
-        border-radius: 4px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
         left: -50%;
         position: relative;
         transition: background-color 0.2s ease-in-out;
+        background-color: #009ea6;
     }
 
     &__list {
@@ -71,18 +71,21 @@
         border-color: #181818 transparent transparent;
         margin-left: -8px;
         transition: border-color 0.2s ease-in-out;
+        border-color: #009ea6 transparent transparent;
     }
 
     &__item {
         display: inline-block;
-        color: #ccc;
+        color: #fff;
+        opacity: 0.8;
 
         &:hover {
             color: #fff;
         }
 
         &--active {
-            color: #3192e7;
+            color: #fff;
+            opacity: 1;
 
             &:hover {
                 color: #3192e7;
@@ -90,9 +93,10 @@
         }
 
         &--separator {
-            border-right: 1px solid #333;
+            border-right: 1px solid #fff;
             height: 20px;
-            margin: 0 8px
+            margin: 0 8px;
+            color: #fff;
         }
     }
 
@@ -106,16 +110,37 @@
         background: transparent;
     }
 
+    /*overide semantic styles with !important*/
     &__input {
-        background-color: transparent;
-        border: none;
-        color: #fafafa;
-        font-size: 0.875rem;
-        height: auto;
-        line-height: 1.2rem;
-        margin: 0;
-        padding: 20px;
-        width: 250px;
+        border: none !important;
+        color: #fafafa !important;
+        font-size: 0.875rem !important;
+        height: auto !important;
+        line-height: 1.2rem !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        width: 260px !important;
+        border-radius: 0px !important;
+        background: transparent !important;
+        box-sizing: border-box !important;
+        padding-right: 30px !important;
+        height: 56px !important;
+
+        &::-webkit-input-placeholder {
+           color: #f7f7f7;
+        }
+
+        &:-moz-placeholder { /* Firefox 18- */
+           color: #f7f7f7;
+        }
+
+        &::-moz-placeholder {  /* Firefox 19+ */
+           color: #f7f7f7;
+        }
+
+        &:-ms-input-placeholder {  
+           color: #f7f7f7;
+        }
 
         &:focus {
             outline: none;

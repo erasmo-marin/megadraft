@@ -89,6 +89,27 @@
   }
 }
 
+.block__content {
+  &__videoContainer {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    background: #000;
+    box-sizing: border-box;
+    
+    &__youtube {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 56px 0;
+      box-sizing: border-box;
+    }
+  }
+}
+
 .block__notfound {
   &__icon {
     color: #999;

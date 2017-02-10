@@ -160,6 +160,8 @@
   float: left;
   left: -57px;
   position: absolute;
+  -webkit-transition: opacity .5s ease, top .3s ease-in-out;
+  transition: opacity .5s ease, top .3s ease-in-out;
 }
 
 .megadraft-editor .sidebar__sidemenu-wrapper {
@@ -511,6 +513,25 @@
 .megadraft-editor .block__content video {
   margin-top: 56px;
   margin-bottom: 56px;
+}
+
+.megadraft-editor .block__content__videoContainer {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  background: #000;
+  box-sizing: border-box;
+}
+
+.megadraft-editor .block__content__videoContainer__youtube {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 56px 0;
+  box-sizing: border-box;
 }
 
 .megadraft-editor .block__notfound__icon {

@@ -11,6 +11,7 @@
         float: left;
         left: -57px;
         position: absolute;
+        transition: opacity .5s ease, top .3s ease-in-out;
     }
 
     &__sidemenu-wrapper {

@@ -33,13 +33,37 @@ export default class VideoBlock extends Component {
     this.props.container.updateData({caption: event.target.value});
   }
 
+  renderYoutubeElement(url) {
+    let videoId = url.split("/").pop();
+
+    return (<div className="block__content__videoContainer">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}`}
+                className="block__content__videoContainer__youtube"
+              />
+            </div>
+            );
+  }
+
+  isYoutubeUrl(url) {
+    if(url.indexOf("youtube.com") || url.indexOf("youtu.be"))
+      return true;
+    return false;
+  }
+
   render() {
     return (
       <CommonBlock {...this.props} actions={this.actions}>
         <BlockContent>
-          <video controls style={VideoBlockStyle.video} src={this.props.data.src} alt=""/>
+          <Choose>
+            <When condition={this.isYoutubeUrl(this.props.data.src)}>
+              { this.renderYoutubeElement(this.props.data.src) }
+            </When>
+            <Otherwise>
+              <video controls style={VideoBlockStyle.video} src={this.props.data.src} alt=""/>
+            </Otherwise>
+          </Choose>
         </BlockContent>
-
         <BlockData>
           <BlockInput
             placeholder="Caption"

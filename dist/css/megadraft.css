@@ -522,6 +522,7 @@
   padding-bottom: 56.25%;
   background: #000;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .megadraft-editor .block__content__videoContainer__youtube {
@@ -532,6 +533,7 @@
   height: 100%;
   padding: 56px 0;
   box-sizing: border-box;
+  border: none;
 }
 
 .megadraft-editor .block__notfound__icon {

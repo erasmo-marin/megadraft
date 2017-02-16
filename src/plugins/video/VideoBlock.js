@@ -33,8 +33,19 @@ export default class VideoBlock extends Component {
     this.props.container.updateData({caption: event.target.value});
   }
 
+  _getYoutubeId(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+
+      if (match && match[2].length == 11) {
+          return match[2];
+      } else {
+          return false;
+      }
+  }
+
   renderYoutubeElement(url) {
-    let videoId = url.split("/").pop();
+    let videoId = this._getYoutubeId(url);
 
     return (<div className="block__content__videoContainer">
               <iframe

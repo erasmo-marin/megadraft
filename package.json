@@ -4,10 +4,16 @@
   "description": "Rich Text editor built on top of draft.js",
   "main": "lib/Megadraft.js",
   "dependencies": {
+    "axios": "^0.15.3",
     "classnames": "^2.2.5",
     "draft-js": "0.9.1",
     "immutable": "^3.8.1",
-    "setimmediate": "^1.0.4"
+    "jsonp": "^0.2.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-tap-event-plugin": "^2.0.1",
+    "setimmediate": "^1.0.4",
+    "superagent": "^3.5.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
@@ -39,14 +45,14 @@
     "merge": "^1.2.0",
     "mocha": "^2.4.5",
     "raw-loader": "^0.5.1",
-    "react": "15.2.1",
-    "react-addons-test-utils": "15.2.1",
-    "react-dom": "15.2.1",
+    "react": "15.4.2",
+    "react-addons-test-utils": "15.4.2",
+    "react-dom": "15.4.2",
     "react-markdown": "2.3.0",
     "react-router": "2.4.0",
     "react-scroll": "^1.4.4",
     "react-sticky": "^5.0.5",
-    "react-tap-event-plugin": "1.0.0",
+    "react-tap-event-plugin": "2.0.1",
     "rimraf": "^2.5.2",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
@@ -55,8 +61,8 @@
     "webpack-dev-server": "^1.14.1"
   },
   "peerDependencies": {
-    "react": "^15.2.1",
-    "react-dom": "^15.2.1"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
   },
   "scripts": {
     "start": "gulp dev-server",

@@ -24,13 +24,14 @@ import DropdownArrow from "./icons/dropdownArrow";
 import ErrorIcon from "./icons/error";
 import UnlinkIcon from "./icons/unlink";
 import CloseIcon from "./icons/close";
+import TwitterIcon from "./icons/twitter";
 
 
 const icons = {
   BoldIcon, ItalicIcon, ULIcon, OLIcon, H2Icon, BlockQuoteIcon, LinkIcon,
   CrossIcon, ImageIcon, VideoIcon, EditIcon, DeleteIcon, CropIcon, MediaBigIcon,
   MediaMediumIcon, MediaSmallIcon, DropdownArrow, ErrorIcon, UnlinkIcon,
-  CloseIcon
+  CloseIcon, TwitterIcon
 };
 
 export default icons;

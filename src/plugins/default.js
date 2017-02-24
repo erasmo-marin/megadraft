@@ -6,9 +6,11 @@
 
 import image from "./image/plugin";
 import video from "./video/plugin";
+import twitter from "./twitter/plugin";
 
 
 export default [
   image,
-  video
+  video,
+  twitter
 ];

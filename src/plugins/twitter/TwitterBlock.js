@@ -19,7 +19,7 @@ export default class TwitterBlock extends Component {
       {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
     ];
     this.state = {
-      twittHtml: "<div>Loading</div>"
+      tweettHtml: "<div>Loading</div>"
     }
   }
 
@@ -30,7 +30,7 @@ export default class TwitterBlock extends Component {
         console.error(err.message);
       } else {
         this.setState({
-          twittHtml: "<div>" + data.html + "</div>"
+          tweettHtml: "<div>" + data.html + "</div>"
         });
       }
     });
@@ -41,13 +41,13 @@ export default class TwitterBlock extends Component {
   }
 
   getTwittComponent() {
-    const twittContainer = {
+    const tweettContainer = {
       paddingTop: "56px",
       marginBottom: "-30px"
     }
 
     return (
-      <div className="twittContainer" style={twittContainer} dangerouslySetInnerHTML={{__html: this.state.twittHtml}}></div>
+      <div className="tweettContainer" style={tweettContainer} dangerouslySetInnerHTML={{__html: this.state.tweettHtml}}></div>
     );
   }
 

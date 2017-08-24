@@ -5,15 +5,20 @@
  */
 
 import React from "react";
+import PropTypes from "prop-types";
 
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import {grey300, grey900, white, indigo500} from "material-ui/styles/colors";
 
-import {MegadraftEditor} from "../../src/Megadraft";
+import {MegadraftEditor} from "../../src/megadraft";
 import {editorStateToJSON, editorStateFromRaw} from "../../src/utils";
 import {highlightCode} from "./highlightCode";
 
 import INITIAL_CONTENT from "./contentExample";
+
+import relatedArticles from "megadraft-related-articles-plugin";
+import image from "../../src/plugins/image/plugin";
+import video from "../../src/plugins/video/plugin";
 
 
 const muiTheme = getMuiTheme({
@@ -33,14 +38,18 @@ class Example extends React.Component {
   constructor(props) {
     super(props);
     const content = editorStateFromRaw(INITIAL_CONTENT);
-    this.keyBindings = [
-        { name: "save", isKeyBound: (e) => { return e.keyCode === 83 && e.ctrlKey; }, action: () => { this.onSave(); } }
-    ];
+    this.keyBindings = [{
+      name: "save",
+      isKeyBound: (e) => {return e.keyCode === 83 && e.ctrlKey;},
+      action: () => {this.onSave();}
+    }];
+    this.resetStyleNewLine = true;
     this.state = {
       value: content,
     };
     this.onChange = ::this.onChange;
     this.onCodeActive = ::this.onCodeActive;
+    this.maxSidebarButtons = null;
   }
 
   getChildContext() {
@@ -69,10 +78,13 @@ class Example extends React.Component {
     return (
       <div className="tab-container-editor">
         <MegadraftEditor
+          plugins={[image, video, relatedArticles]}
           editorState={this.state.value}
           placeholder="Text"
           onChange={this.onChange}
-          keyBindings={this.keyBindings}/>
+          keyBindings={this.keyBindings}
+          resetStyleNewLine={this.resetStyleNewLine}
+          maxSidebarButtons={this.maxSidebarButtons}/>
       </div>
     );
   }
@@ -104,7 +116,7 @@ class Example extends React.Component {
 hljs.initHighlightingOnLoad();
 
 Example.childContextTypes = {
-  muiTheme: React.PropTypes.object.isRequired
+  muiTheme: PropTypes.object.isRequired
 };
 
 export default Example;

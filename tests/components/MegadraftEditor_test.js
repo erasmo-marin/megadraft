@@ -4,10 +4,10 @@
  * License: MIT
  */
 
-import React from "react";
+import React, {Component} from "react";
 import chai from "chai";
 import sinon from "sinon";
-import {Editor} from "draft-js";
+import {Editor, EditorState, SelectionState} from "draft-js";
 import {mount} from "enzyme";
 
 import MegadraftEditor from "../../src/components/MegadraftEditor";
@@ -21,6 +21,34 @@ import NotFoundPlugin from "../../src/plugins/not-found/plugin";
 
 let expect = chai.expect;
 let kba = function keyBindingAction() {};
+
+
+function replaceSelection(newSelection, wrapper, blockKey) {
+  const selectionState = SelectionState.createEmpty(blockKey);
+  const updatedSelection = selectionState.merge(newSelection);
+  const oldState = wrapper.state("editorState");
+  const editorState = EditorState.forceSelection(oldState, updatedSelection);
+
+  wrapper.setState({editorState: editorState});
+}
+
+class MegadraftEditorWrapper extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {...props};
+  }
+
+  render() {
+    return (
+      <MegadraftEditor
+        editorState={this.state.editorState}
+        onChange={this.props.onChange}
+        keyBindings={this.props.keyBindings}
+        blocksWithoutStyleReset={this.props.blocksWithoutStyleReset}
+        resetStyleNewLine={this.props.resetStyleNewLine}/>
+    );
+  }
+}
 
 
 describe("MegadraftEditor Component", () => {
@@ -66,6 +94,21 @@ describe("MegadraftEditor Component", () => {
           "entityRanges": []
         },
         {
+          "key": "bqjdr",
+          "text": "Good usability",
+          "type": "ordered-list-item",
+          "depth": 0,
+          "inlineStyleRanges": [
+            {
+              "offset": 0,
+              "length": 14,
+              "style": "BOLD"
+            }
+          ],
+          "entityRanges": [],
+          "data": {}
+        },
+        {
           "key": "9vgd",
           "text": "🍺",
           "type": "atomic",
@@ -86,7 +129,12 @@ describe("MegadraftEditor Component", () => {
     const keyBindings = [
       {name: "save", isKeyBound: (e) => {return e.keyCode === 83 && e.ctrlKey;}, action: kba}
     ];
+    const blocksWithoutStyleReset = ["ordered-list-item", "unordered-list-item"];
+    const resetStyleOn = true;
+    const resetStyleOff = false;
 
+    this.maxSidebarButtons = null;
+    this.modalOptions = {width: 500, height: 300};
     this.onChange = sinon.spy();
     this.editorState = editorStateFromRaw(INITIAL_CONTENT);
     this.wrapper = mount(
@@ -96,6 +144,24 @@ describe("MegadraftEditor Component", () => {
         keyBindings={keyBindings}/>
     );
     this.component = this.wrapper.get(0);
+
+    this.wrapperWithReset = mount(
+      <MegadraftEditorWrapper
+        editorState={this.editorState}
+        onChange={this.onChange}
+        keyBindings={keyBindings}
+        blocksWithoutStyleReset={blocksWithoutStyleReset}
+        resetStyleNewLine={resetStyleOn}/>
+    );
+
+    this.wrapperWithoutReset = mount(
+      <MegadraftEditorWrapper
+        editorState={this.editorState}
+        onChange={this.onChange}
+        keyBindings={keyBindings}
+        blocksWithoutStyleReset={blocksWithoutStyleReset}
+        resetStyleNewLine={resetStyleOff}/>
+    );
   });
 
   it("renders without problems", function() {
@@ -103,7 +169,7 @@ describe("MegadraftEditor Component", () => {
   });
 
   it("has the initial text", function() {
-    expect(this.component.refs.editor.textContent).to.have.string("Hello World!");
+    expect(this.component.editorEl.textContent).to.have.string("Hello World!");
   });
 
   it("renders Media component", function() {
@@ -112,7 +178,7 @@ describe("MegadraftEditor Component", () => {
   });
 
   it("passes extra props to the draft-js editor", function() {
-    const handlePastedText = (text) => { console.log(text); };
+    const handlePastedText = (text) => { return text; };
     const wrapper = mount(
       <MegadraftEditor
         editorState={this.editorState}
@@ -120,11 +186,11 @@ describe("MegadraftEditor Component", () => {
         handlePastedText={handlePastedText}
       />
     );
-    expect(wrapper.ref("draft").props().handlePastedText).to.equal(handlePastedText);
+    expect(wrapper.find(Editor).props().handlePastedText).to.equal(handlePastedText);
   });
 
-  it("cant overridde megadraft props via extra props", function() {
-    const blockRendererFn = (text) => { console.log(text); };
+  it("can't override megadraft props via extra props", function() {
+    const blockRendererFn = (text) => { return text; };
     const wrapper = mount(
       <MegadraftEditor
         editorState={this.editorState}
@@ -132,7 +198,104 @@ describe("MegadraftEditor Component", () => {
         blockRendererFn={blockRendererFn}
       />
     );
-    expect(wrapper.ref("draft").props().blockRendererFn).to.not.equal(blockRendererFn);
+    expect(wrapper.find(Editor).props().blockRendererFn).to.not.equal(blockRendererFn);
+  });
+
+  it("allows blockStyleFn to be overridden", function() {
+    const blockStyleFn = (text) => { return text; };
+    const wrapper = mount(
+      <MegadraftEditor
+        editorState={this.editorState}
+        onChange={this.onChange}
+        blockStyleFn={blockStyleFn}
+      />
+    );
+    expect(wrapper.find(Editor).props().blockStyleFn).to.equal(blockStyleFn);
+  });
+
+  it("reset blockStyle in new block if resetStyle is true", function() {
+    const blockKey = "ag6qs";
+    replaceSelection(
+      {anchorOffset: 12, focusOffset: 12},
+      this.wrapperWithReset,
+      blockKey
+    );
+
+    const editor = this.wrapperWithReset.find(MegadraftEditor);
+
+    editor.node.handleReturn({shiftKey:false});
+
+    const content = this.onChange.args[0][0].getCurrentContent();
+    const newBlock = content.getBlockAfter("ag6qs");
+
+    expect(newBlock.getType()).to.be.equal("unstyled");
+  });
+
+  it("reset inlineStyle in new block if resetStyle is true", function() {
+    const blockKey = "ag6qs";
+    replaceSelection(
+      {anchorOffset: 12, focusOffset: 12},
+      this.wrapperWithReset,
+      blockKey
+    );
+
+    const editor = this.wrapperWithReset.find(MegadraftEditor);
+
+    editor.node.handleReturn({shiftKey:false});
+
+    const editorState = this.onChange.args[0][0];
+    const inlineStyle = editorState.getCurrentInlineStyle();
+
+    expect(inlineStyle.count()).to.be.equal(0);
+  });
+
+  it("reset inlineStyles if in blocksWithoutStyleReset", function() {
+    const blockKey = "bqjdr";
+    replaceSelection(
+      {anchorOffset: 14, focusOffset: 14},
+      this.wrapperWithReset,
+      blockKey
+    );
+
+    const editor = this.wrapperWithReset.find(MegadraftEditor);
+
+    editor.node.handleReturn({shiftKey:false});
+
+    const editorState = this.onChange.args[0][0];
+    const inlineStyle = editorState.getCurrentInlineStyle();
+
+    expect(inlineStyle.count()).to.be.equal(0);
+  });
+
+  it("reset style should not change list type", function() {
+    const blockKey = "bqjdr";
+    replaceSelection(
+      {anchorOffset: 14, focusOffset: 14},
+      this.wrapperWithReset,
+      blockKey
+    );
+
+    const editor = this.wrapperWithReset.find(MegadraftEditor);
+
+    editor.node.handleReturn({shiftKey:false});
+
+    const content = this.onChange.args[0][0].getCurrentContent();
+    const newBlock = content.getBlockAfter("bqjdr");
+
+    expect(newBlock.type).to.be.equal("ordered-list-item");
+  });
+
+  it("should not reset style if resetStyle is false", function() {
+    const blockKey = "ag6qs";
+    replaceSelection(
+      {anchorOffset: 12, focusOffset: 12},
+      this.wrapperWithoutReset,
+      blockKey
+    );
+
+    const editor = this.wrapperWithoutReset.find(MegadraftEditor);
+
+    expect(editor.node.handleReturn({shiftKey:false})).to.be.equal(false);
   });
 
   describe("mediaBlockRenderer", function () {
@@ -153,7 +316,10 @@ describe("MegadraftEditor Component", () => {
           "plugin": image,
           "onChange": this.component.onChange,
           "editorState": this.editorState,
-          "setReadOnly": this.component.setReadOnly
+          "setReadOnly": this.component.setReadOnly,
+          "getReadOnly": this.component.getReadOnly,
+          "setInitialReadOnly": this.component.setInitialReadOnly,
+          "getInitialReadOnly": this.component.getInitialReadOnly,
         }
       });
     });
@@ -169,7 +335,10 @@ describe("MegadraftEditor Component", () => {
           "plugin": NotFoundPlugin,
           "onChange": this.component.onChange,
           "editorState": this.editorState,
-          "setReadOnly": this.component.setReadOnly
+          "setReadOnly": this.component.setReadOnly,
+          "getReadOnly": this.component.getReadOnly,
+          "setInitialReadOnly": this.component.setInitialReadOnly,
+          "getInitialReadOnly": this.component.getInitialReadOnly,
         }
       });
     });
@@ -190,7 +359,10 @@ describe("MegadraftEditor Component", () => {
           "plugin": customFallbackPlugin,
           "onChange": this.component.onChange,
           "editorState": this.editorState,
-          "setReadOnly": this.component.setReadOnly
+          "setReadOnly": this.component.setReadOnly,
+          "getReadOnly": this.component.getReadOnly,
+          "setInitialReadOnly": this.component.setInitialReadOnly,
+          "getInitialReadOnly": this.component.getInitialReadOnly,
         }
       });
     });
@@ -237,6 +409,77 @@ describe("MegadraftEditor Component", () => {
     expect(component.handleReturn({shiftKey: true})).to.be.equal(false);
   });
 
+  it("is capable of adding a new block when try to add a soft break before an exist one", function() {
+    const SOFT_BREAK_ON_BEGINING = {
+      "entityMap": {},
+      "blocks": [
+        {
+          "key": "ag6qs",
+          "text": "\nHello World!",
+          "type": "unstyled",
+          "depth": 0,
+          "inlineStyleRanges": [],
+          "entityRanges": []
+        }
+      ]
+    };
+
+    kba = sinon.spy();
+    const keyBindings = [
+      {name: "save", isKeyBound: (e) => {return e.keyCode === 83 && e.ctrlKey;}, action: kba}
+    ];
+
+    this.editorState = editorStateFromRaw(SOFT_BREAK_ON_BEGINING);
+
+    this.wrapper = mount(
+      <MegadraftEditor
+        editorState={this.editorState}
+        onChange={this.onChange}
+        keyBindings={keyBindings}/>
+    );
+    this.component = this.wrapper.get(0);
+
+    const addedASoftBreak = this.component.handleReturn({shiftKey: true});
+
+    expect(addedASoftBreak).to.be.false;
+  });
+
+  it("is capable of adding a new block when try to add a soft break after an exist one", function() {
+    const SOFT_BREAK_ON_END = {
+      "entityMap": {},
+      "blocks": [
+        {
+          "key": "ag6qs",
+          "text": "Hello World!\n",
+          "type": "unstyled",
+          "depth": 0,
+          "inlineStyleRanges": [],
+          "entityRanges": []
+        }
+      ]
+    };
+
+    kba = sinon.spy();
+    const keyBindings = [
+      {name: "save", isKeyBound: (e) => {return e.keyCode === 83 && e.ctrlKey;}, action: kba}
+    ];
+
+    this.editorState = EditorState.moveSelectionToEnd(editorStateFromRaw(SOFT_BREAK_ON_END));
+
+    this.wrapper = mount(
+      <MegadraftEditor
+        editorState={this.editorState}
+        onChange={this.onChange}
+        keyBindings={keyBindings}/>
+    );
+
+    this.component = this.wrapper.get(0);
+
+    const addedASoftBreak = this.component.handleReturn({shiftKey: true});
+
+    expect(addedASoftBreak).to.be.false;
+  });
+
   it("recognizes external key binding", function() {
     const defaultKeyBinding = {keyCode: 66, ctrlKey: true};
     expect(this.component.externalKeyBindings(defaultKeyBinding)).to.equal("bold");
@@ -261,6 +504,8 @@ describe("MegadraftEditor Component", () => {
   });
 
   it("renders only valid plugins", function() {
+    console.warn = sinon.spy();
+
     const invalidPlugin = {
       buttonComponent: {},
       blockComponent: {}
@@ -316,7 +561,9 @@ describe("MegadraftEditor Component", () => {
       <MegadraftEditor
         editorState={this.editorState}
         onChange={this.onChange}
-        sidebarRendererFn={renderCustomSidebar} />
+        maxSidebarButtons= {this.maxSidebarButtons}
+        sidebarRendererFn={renderCustomSidebar}
+        modalOptions={this.modalOptions} />
     );
 
     const component = wrapper.get(0);
@@ -324,7 +571,9 @@ describe("MegadraftEditor Component", () => {
       plugins: component.plugins,
       onChange: component.onChange,
       editorState: this.editorState,
-      readOnly: false
+      readOnly: false,
+      maxSidebarButtons: this.maxSidebarButtons,
+      modalOptions: this.modalOptions
     };
     expect(renderCustomSidebar.calledWith(expectedProps)).to.be.true;
   });
@@ -359,9 +608,7 @@ describe("MegadraftEditor Component", () => {
 
   it("passes required props to default toolbar", function() {
     const toolbar = this.wrapper.find(Toolbar);
-    // editor is undefined :-/
-    //expect(toolbar.prop("editor")).to.equal(this.component.refs.editor);
-    expect(toolbar.prop("actions")).to.equal(this.component.actions);
+    expect(toolbar.prop("actions")).to.equal(this.component.props.actions);
     expect(toolbar.prop("entityInputs")).to.equal(this.component.entityInputs);
     expect(toolbar.prop("onChange")).to.equal(this.component.onChange);
     expect(toolbar.prop("editorState")).to.equal(this.editorState);
@@ -387,7 +634,7 @@ describe("MegadraftEditor Component", () => {
     );
     const toolbar = wrapper.find(MyCustomToolbar);
     expect(toolbar).to.have.length(1);
-    expect(toolbar.prop("actions")).to.equal(this.component.actions);
+    expect(toolbar.prop("actions")).to.equal(this.component.props.actions);
     expect(toolbar.prop("entityInputs")).to.equal(this.component.entityInputs);
     expect(toolbar.prop("editorState")).to.equal(this.editorState);
     expect(toolbar.prop("readOnly")).to.equal(false);

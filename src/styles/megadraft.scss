@@ -10,6 +10,8 @@
   all: unset;
 }
 
+@import "modal.scss";
+
 .megadraft-editor {
     all: initial;
     position: relative;

@@ -10,6 +10,123 @@
   all: unset;
 }
 
+/*
+ * Copyright (c) 2016, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
+.sidemenu__button__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -12px 0 0 -12px;
+}
+
+.megadraft-modal {
+  position: relative;
+  width: 528px;
+  height: 394px;
+  text-align: left;
+  z-index: 10;
+}
+
+.megadraft-modal--open {
+  overflow-y: hidden;
+}
+
+.megadraft-modal--close {
+  overflow-y: auto;
+}
+
+.megadraft-modal__button {
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0;
+  padding: 0;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  position: relative;
+  background: none;
+  width: 64px;
+  height: 64px;
+  margin-left: 32px;
+}
+
+.megadraft-modal__button .sidemenu__button__icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -16px 0 0 -16px;
+  width: 32px;
+  height: 32px;
+}
+
+.megadraft-modal__button:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: #181818;
+}
+
+.megadraft-modal__button__label {
+  margin: 0;
+  font-family: Open Sans, sans-serif;
+  width: 129px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.14;
+  color: #3c3c3c;
+  text-align: center;
+  cursor: pointer;
+  z-index: 10;
+  padding-top: 9px;
+}
+
+.megadraft-modal__items {
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  margin: -24px;
+}
+
+.megadraft-modal__items .megadraft-modal__button {
+  background: none;
+}
+
+.megadraft-modal__items .megadraft-modal__button:before {
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  background-color: #181818;
+}
+
+.megadraft-modal__item {
+  line-height: 0px;
+  height: 58px;
+  margin: 0 71px 78px 17px;
+  padding-top: 31px;
+  cursor: pointer;
+  width: 82px;
+}
+
+.megadraft-modal__item:hover .megadraft-modal__button__label {
+  color: #0669de;
+}
+
+.megadraft-modal__item:hover .megadraft-modal__button:before {
+  background-color: #0669de;
+}
+
 .megadraft-editor {
   all: initial;
   position: relative;
@@ -64,7 +181,8 @@
   font-size: 1em;
   background: #FFFFFF;
   color: #282828;
-  box-shadow: 0em 0em 0em 0em transparent inset;
+  -webkit-box-shadow: 0em 0em 0em 0em transparent inset;
+          box-shadow: 0em 0em 0em 0em transparent inset;
   -webkit-transition: color 0.1s ease, border-color 0.1s ease;
   transition: color 0.1s ease, border-color 0.1s ease;
   min-height: 100px;
@@ -201,7 +319,8 @@
   display: inline-block;
   background-color: #009ea6;
   opacity: 0.8;
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
 }
 
 .megadraft-editor .sidemenu__button:before:hover {
@@ -307,7 +426,8 @@
 }
 
 .megadraft-editor .toolbar__wrapper {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   left: -50%;
   position: relative;
   -webkit-transition: background-color 0.2s ease-in-out;
@@ -393,7 +513,8 @@
   width: 260px !important;
   border-radius: 0px !important;
   background: transparent !important;
-  box-sizing: border-box !important;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
   padding-right: 30px !important;
   height: 56px !important;
 }
@@ -430,7 +551,8 @@
 }
 
 .megadraft-editor .block__hover:hover {
-  box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .megadraft-editor .block__wrapper {
@@ -442,7 +564,8 @@
   background-color: #fff;
   border-radius: 3px;
   border: solid 1px #ddd;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .megadraft-editor .block__controls {
@@ -451,7 +574,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   overflow: visible;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 2;
@@ -521,7 +645,8 @@
   height: 0;
   padding-bottom: 56.25%;
   background: #000;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -532,7 +657,8 @@
   width: 100%;
   height: 100%;
   padding: 56px 0;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   border: none;
 }
 
@@ -551,7 +677,8 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -656,7 +783,8 @@
 }
 
 .megadraft-editor .dropdown__wrapper--open {
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   color: #333;
 }
 

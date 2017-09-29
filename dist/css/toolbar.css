@@ -48,7 +48,8 @@
 }
 
 .toolbar__wrapper {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   left: -50%;
   position: relative;
   -webkit-transition: background-color 0.2s ease-in-out;
@@ -134,7 +135,8 @@
   width: 260px !important;
   border-radius: 0px !important;
   background: transparent !important;
-  box-sizing: border-box !important;
+  -webkit-box-sizing: border-box !important;
+          box-sizing: border-box !important;
   padding-right: 30px !important;
   height: 56px !important;
 }

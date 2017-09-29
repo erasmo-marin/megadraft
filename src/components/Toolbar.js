@@ -5,13 +5,19 @@
  */
 
 import React, {Component} from "react";
-import {EditorState, RichUtils, Entity} from "draft-js";
+import {EditorState, RichUtils} from "draft-js";
 import classNames from "classnames";
 import ToolbarItem from "./ToolbarItem";
 import {getSelectionCoords} from "../utils";
 
 
 export default class Toolbar extends Component {
+  static defaultProps = {
+    shouldDisplayToolbarFn() {
+      return !this.editorState.getSelection().isCollapsed();
+    },
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +55,11 @@ export default class Toolbar extends Component {
     let key = item.label;
 
     switch(item.type) {
+      case "custom": {
+        key = "custom-" + position;
+        toggle = () => item.action(this.props.editorState);
+        break;
+      }
       case "inline": {
         current = this.props.editorState.getCurrentInlineStyle();
         toggle = () => this.toggleInlineStyle(item.style);
@@ -93,7 +104,8 @@ export default class Toolbar extends Component {
 
   setBarPosition() {
     const editor = this.props.editor;
-    const toolbar = this.refs.toolbar;
+    const toolbar = this.toolbarEl;
+    const arrow = this.arrowEl;
     const selectionCoords = getSelectionCoords(editor, toolbar);
 
     if (!selectionCoords) {
@@ -107,14 +119,26 @@ export default class Toolbar extends Component {
     if (selectionCoords &&
         !this.state.position ||
         this.state.position.bottom !== selectionCoords.offsetBottom ||
-        this.state.position.left !== left) {
-
-
+        this.state.position.left !== left ||
+        !this.state.show) {
       this.setState({
         show: true,
         position: {
           bottom: selectionCoords.offsetBottom,
           left
+        }
+      }, state => {
+        const minOffsetLeft = 5;
+        const minOffsetRight = 5;
+        const toolbarDimensions = toolbar.getBoundingClientRect();
+
+        if (toolbarDimensions.left < minOffsetLeft) {
+          toolbar.style.left = -((toolbarDimensions.width / 2) + toolbarDimensions.left - minOffsetLeft) + "px";
+          arrow.style.left = ((toolbarDimensions.width / 2) + toolbarDimensions.left - minOffsetLeft) + "px";
+        }
+        if (toolbarDimensions.left + toolbarDimensions.width > window.innerWidth - minOffsetRight) {
+          toolbar.style.left = -(toolbarDimensions.right - selectionCoords.offsetLeft + minOffsetRight) + "px";
+          arrow.style.left = (toolbarDimensions.right - selectionCoords.offsetLeft + minOffsetRight) + "px";
         }
       });
     }
@@ -122,7 +146,12 @@ export default class Toolbar extends Component {
 
 
   componentDidUpdate() {
-    if (!this.props.editorState.getSelection().isCollapsed()) {
+    // reset toolbar position every time
+    if (this.toolbarEl && this.arrowEl) {
+      this.toolbarEl.style.left = "";
+      this.arrowEl.style.left = "";
+    }
+    if (this.props.shouldDisplayToolbarFn()) {
       return this.setBarPosition();
     } else {
       if (this.state.show) {
@@ -147,9 +176,10 @@ export default class Toolbar extends Component {
   }
 
   getCurrentEntity() {
+    const contentState = this.props.editorState.getCurrentContent();
     const entityKey = this.getCurrentEntityKey();
     if(entityKey) {
-      return Entity.get(entityKey);
+      return contentState.getEntity(entityKey);
     }
     return null;
   }
@@ -164,7 +194,9 @@ export default class Toolbar extends Component {
 
   setEntity(entityType, data, mutability = "MUTABLE") {
     const {editorState} = this.props;
-    const entityKey = Entity.create(entityType, mutability, data);
+    const contentState = editorState.getCurrentContent();
+    const contentStateWithEntity = contentState.createEntity(entityType, mutability, data);
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
     const newState = RichUtils.toggleLink(
       editorState,
       editorState.getSelection(),
@@ -222,7 +254,7 @@ export default class Toolbar extends Component {
           cancelError={this.cancelError}
           entity={entity}
           {...entityData}
-          />
+        />
       );
     } else {
       console.warn("unknown entity type: "+entityType);
@@ -240,23 +272,23 @@ export default class Toolbar extends Component {
     if(this.props.readOnly) {
       return null;
     }
+
     const toolbarClass = classNames("toolbar", {
       "toolbar--open": this.state.show,
       "toolbar--error": this.state.error
     });
 
     return (
-      <div className={toolbarClass}
-           style={this.state.position}
-           ref="toolbarWrapper">
+      <div className={toolbarClass} style={this.state.position}>
         <div style={{position: "absolute", bottom: 0}}>
-          <div className="toolbar__wrapper" ref="toolbar">
+          <div className="toolbar__wrapper" ref={(el) => { this.toolbarEl = el; }}>
             {
               this.state.editingEntity ?
-              this.renderEntityInput(this.state.editingEntity) :
-              this.renderToolList()
+                this.renderEntityInput(this.state.editingEntity) :
+                this.renderToolList()
             }
             <p className="toolbar__error-msg">{this.state.error}</p>
+            <span className="toolbar__arrow" style={{display: "none"}} ref={(el) => { this.arrowEl = el; }} />
           </div>
         </div>
       </div>

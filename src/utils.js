@@ -6,7 +6,6 @@
  */
 
 import {
-  Entity,
   convertToRaw,
   convertFromRaw,
   EditorState,
@@ -34,9 +33,7 @@ export function editorStateFromRaw(rawContent, decorator = defaultDecorator) {
 export function getSelectedBlockElement(range) {
   let node = range.startContainer;
   do {
-    const nodeIsDataBlock = node.getAttribute
-                            ? node.getAttribute("data-block")
-                            : null;
+    const nodeIsDataBlock = node.getAttribute ? node.getAttribute("data-block") : null;
     if (nodeIsDataBlock) {
       return node;
     }
@@ -61,17 +58,17 @@ export function getSelectionCoords(editor, toolbar) {
             + (rangeWidth / 2);
   const offsetTop = rangeBounds.top - editorBounds.top - (toolbarHeight + 14);
   const offsetBottom = editorBounds.bottom - rangeBounds.top + 14;
-  return { offsetLeft, offsetTop, offsetBottom };
+  return {offsetLeft, offsetTop, offsetBottom};
 }
 
 export function createTypeStrategy(type) {
-  return (contentBlock, callback) => {
+  return (contentBlock, callback, contentState) => {
     contentBlock.findEntityRanges(
       (character) => {
         const entityKey = character.getEntity();
         return (
           entityKey !== null &&
-          Entity.get(entityKey).getType() === type
+          contentState.getEntity(entityKey).getType() === type
         );
       },
       callback

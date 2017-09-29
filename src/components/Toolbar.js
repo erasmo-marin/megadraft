@@ -100,19 +100,26 @@ export default class Toolbar extends Component {
       return null;
     }
 
+    let left = selectionCoords.offsetLeft;
+    if (selectionCoords.offsetLeft < toolbar.offsetWidth/2)
+      left = toolbar.offsetWidth/2;
+
     if (selectionCoords &&
         !this.state.position ||
         this.state.position.bottom !== selectionCoords.offsetBottom ||
-        this.state.position.left !== selectionCoords.offsetLeft) {
+        this.state.position.left !== left) {
+
+
       this.setState({
         show: true,
         position: {
           bottom: selectionCoords.offsetBottom,
-          left: selectionCoords.offsetLeft
+          left
         }
       });
     }
   }
+
 
   componentDidUpdate() {
     if (!this.props.editorState.getSelection().isCollapsed()) {
@@ -250,7 +257,6 @@ export default class Toolbar extends Component {
               this.renderToolList()
             }
             <p className="toolbar__error-msg">{this.state.error}</p>
-            <span className="toolbar__arrow" />
           </div>
         </div>
       </div>

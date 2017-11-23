@@ -1,19 +1,19 @@
 {
   "name": "megadraft",
-  "version": "0.4.28",
+  "version": "0.4.29",
   "description": "Rich Text editor built on top of draft.js",
   "main": "lib/Megadraft.js",
   "dependencies": {
     "axios": "^0.15.3",
-    "superagent": "^3.5.0",
     "backstage-modal": "^0.2.5",
     "classnames": "^2.2.5",
     "draft-js": "0.10.1",
     "immutable": "~3.7.4",
+    "jsonp": "^0.2.1",
     "prop-types": "^15.5.10",
-    "setimmediate": "^1.0.4",
     "react-tap-event-plugin": "^2.0.1",
-    "jsonp": "^0.2.1"
+    "setimmediate": "^1.0.4",
+    "superagent": "^3.5.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -45,8 +45,8 @@
     "megadraft-related-articles-plugin": "0.2.1",
     "mocha": "^3.5.0",
     "raw-loader": "^0.5.1",
-    "react-addons-test-utils": "15.6.1",
     "react": "15.6.1",
+    "react-addons-test-utils": "15.6.1",
     "react-dom": "15.6.1",
     "react-markdown": "2.5.0",
     "react-router": "3.0.5",

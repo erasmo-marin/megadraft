@@ -22,17 +22,17 @@
 
     .DraftEditor-root {
         border: none;
-        border-left: 2px solid #dedede;
-        border-radius: 0px;
+        border: 1px solid #b8bbc6;
+        border-radius: 2px;
         font-family: 'Avenir Next', 'Helvetica Neue', Arial, Helvetica, sans-serif;
         margin: 0em;
         outline: none;
         -webkit-appearance: none;
         tap-highlight-color: rgba(255, 255, 255, 0);
         line-height: 1.2142em;
-        padding: 0.67861429em 1em;
+        padding: 35px;
         font-size: 1em;
-        background: #FFFFFF;
+        background: #fff;
         color: #282828;
         box-shadow: 0em 0em 0em 0em transparent inset;
         -webkit-transition: color 0.1s ease, border-color 0.1s ease;

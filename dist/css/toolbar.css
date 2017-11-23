@@ -54,7 +54,9 @@
   position: relative;
   -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
-  background-color: #009ea6;
+  background-color: #282828;
+  height: 40px;
+  border-radius: 50px;
 }
 
 .toolbar__list {
@@ -78,7 +80,7 @@
   margin-left: -8px;
   -webkit-transition: border-color 0.2s ease-in-out;
   transition: border-color 0.2s ease-in-out;
-  border-color: #009ea6 transparent transparent;
+  border-color: #282828 transparent transparent;
 }
 
 .toolbar__item {
@@ -113,7 +115,7 @@
   color: inherit;
   cursor: pointer;
   border: 0;
-  height: 56px;
+  height: 40px;
   width: 40px;
   background: transparent;
 }

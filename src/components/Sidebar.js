@@ -107,13 +107,13 @@ export class ToggleButton extends Component {
   render() {
     const Icon = icons.CrossIcon;
 
-    const className = classNames("sidemenu__button", {
-      "sidemenu__button--open": this.props.open
+    const className = classNames("sidemenu__button__menu", {
+      "sidemenu__button__menu--open": this.props.open
     });
 
     return (
       <button type="button" className={className} onClick={this.props.toggle}>
-        <Icon className="sidemenu__button__icon" />
+        <Icon className="sidemenu__button__menu__icon" />
       </button>
     );
   }

@@ -296,7 +296,43 @@
   text-align: center;
 }
 
-.megadraft-editor .sidemenu__button {
+.megadraft-editor .sidemenu__button, .megadraft-editor .sidemenu__button__menu {
+  border: 0;
+  color: #c0c0c0;
+  cursor: pointer;
+  height: 18px;
+  font-size: 5px;
+  text-align: center;
+  line-height: 18px;
+  padding: 0;
+  width: 18px;
+  position: relative;
+  background: none;
+  -webkit-transition: -webkit-transform 0.2s linear;
+  transition: -webkit-transform 0.2s linear;
+  transition: transform 0.2s linear;
+  transition: transform 0.2s linear, -webkit-transform 0.2s linear;
+  outline: none;
+}
+
+.megadraft-editor .sidemenu__button:before, .megadraft-editor .sidemenu__button__menu:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  display: inline-block;
+  background-color: transparent;
+  border: 1px solid #c0c0c0;
+  opacity: 0.8;
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+}
+
+.megadraft-editor .sidemenu__button:before:hover, .megadraft-editor .sidemenu__button__menu:before:hover {
+  background-color: #333333;
+}
+
+.megadraft-editor .sidemenu__button__menu, .megadraft-editor .sidemenu__button__menu__menu {
   border: 0;
   color: #c0c0c0;
   cursor: pointer;
@@ -315,33 +351,33 @@
   outline: none;
 }
 
-.megadraft-editor .sidemenu__button:before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  border-radius: 100%;
-  display: inline-block;
-  background-color: transparent;
-  border: 1px solid #c0c0c0;
-  opacity: 0.8;
-  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+.megadraft-editor .sidemenu__button__menu__icon, .megadraft-editor .sidemenu__button__menu__menu__icon {
+  -webkit-transition: -webkit-transform 0.2s linear;
+  transition: -webkit-transform 0.2s linear;
+  transition: transform 0.2s linear;
+  transition: transform 0.2s linear, -webkit-transform 0.2s linear;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -8px;
+  width: 18px;
+  height: 18px;
 }
 
-.megadraft-editor .sidemenu__button:before:hover {
-  background-color: #333333;
-}
-
-.megadraft-editor .sidemenu__button--open {
+.megadraft-editor .sidemenu__button__menu--open .sidemenu__button__menu__icon, .megadraft-editor .sidemenu__button__menu__menu--open .sidemenu__button__menu__icon {
+  -webkit-transition: -webkit-transform 0.2s linear;
+  transition: -webkit-transform 0.2s linear;
+  transition: transform 0.2s linear;
+  transition: transform 0.2s linear, -webkit-transform 0.2s linear;
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg);
 }
 
-.megadraft-editor .sidemenu__button--open:before {
+.megadraft-editor .sidemenu__button__menu--open:before, .megadraft-editor .sidemenu__button__menu__menu--open:before {
   background-color: transparent;
 }
 
-.megadraft-editor .sidemenu__button__icon {
+.megadraft-editor .sidemenu__button__icon, .megadraft-editor .sidemenu__button__menu__icon {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -351,10 +387,10 @@
 }
 
 .megadraft-editor .sidemenu__items {
+  display: none;
   list-style: none;
   padding: 0 15px;
   margin-top: -22px;
-  padding-top: 2px;
   overflow: hidden;
   text-align: center;
   opacity: 0;
@@ -367,9 +403,15 @@
 }
 
 .megadraft-editor .sidemenu__items--open {
+  display: block;
   opacity: 1;
   -webkit-transition: opacity 0.3s linear;
   transition: opacity 0.3s linear;
+  min-width: 100px;
+}
+
+.megadraft-editor .sidemenu__items--open .sidemenu__button__icon {
+  display: block;
 }
 
 .megadraft-editor .sidemenu__items:after {
@@ -381,8 +423,8 @@
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   border-right: 8px solid #282828;
-  left: 34px;
-  top: 2px;
+  left: 35px;
+  top: 1px;
 }
 
 .megadraft-editor .sidemenu__items .sidemenu__button {

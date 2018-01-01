@@ -9,7 +9,6 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import {withRouter, hashHistory, Router, Route, IndexRoute, Link} from "react-router";
 import Scroll from "react-scroll";
-import {StickyContainer, Sticky} from "react-sticky";
 
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import FlatButton from "material-ui/FlatButton";
@@ -107,7 +106,6 @@ class Page extends React.Component {
     return (
       <div>
         {this.isHome? <Header /> : null}
-        <StickyContainer>
           {this.isHome? <div>
             <LinkScroll className="hero__call-to-action"
               to="appbar" spy={true}
@@ -120,7 +118,6 @@ class Page extends React.Component {
             </LinkScroll>
           </div>: null}
           <Element name="appbar">
-            <Sticky style={{zIndex:1100}}>
               <Toolbar
                 style={{background:this.state.content? white: darkBlack,
                   border: "solid 1px rgba(0, 0, 0, 0.1)"}}>
@@ -184,13 +181,11 @@ class Page extends React.Component {
                   </ToolbarGroup>
                   : <ToolbarGroup />}
               </Toolbar>
-            </Sticky>
           </Element>
 
           <div className={this.state.content? "": "container--dark"}>
             {React.cloneElement(this.props.children, {activeContent: this.state.content})}
           </div>
-        </StickyContainer>
       </div>
     );
   }

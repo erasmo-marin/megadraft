@@ -4,31 +4,28 @@
  * License: MIT
  */
 
-import React, {Component} from "react";
-import chai from "chai";
-import {mount} from "enzyme";
+import React, { Component } from "react";
+import { mount } from "enzyme";
 import cp from "utils-copy";
 
-import Sidebar, {ToggleButton, SideMenu} from "../../src/components/Sidebar";
+import Sidebar, { ToggleButton, SideMenu } from "../../src/components/Sidebar";
 import PluginsModal from "../../src/components/PluginsModal";
 import image from "../../src/plugins/image/plugin";
-import {editorStateFromRaw} from "../../src/utils";
+import { editorStateFromRaw } from "../../src/utils";
 import DEFAULT_PLUGINS from "../../src/plugins/default.js";
 import ImageButton from "../../src/plugins/image/ImageButton";
-
-let expect = chai.expect;
-
 
 class SidebarWrapper extends Component {
   constructor(props) {
     super(props);
-    this.state = {...props};
+    this.state = { ...props };
     this.plugins = this.props.plugins || DEFAULT_PLUGINS;
+    this.editorHasFocus = true;
     this.onChange = ::this.onChange;
   }
 
   onChange(editorState) {
-    this.setState({editorState: editorState});
+    this.setState({ editorState: editorState });
   }
 
   render() {
@@ -39,30 +36,32 @@ class SidebarWrapper extends Component {
           plugins={this.plugins}
           editorState={this.state.editorState}
           readOnly={this.props.readOnly}
-          onChange={this.onChange} />
+          onChange={this.onChange}
+          editorHasFocus={this.editorHasFocus}
+        />
       </div>
     );
   }
 }
 
-
 class SidebarWithModalWrapper extends Component {
   constructor(props) {
     super(props);
-    this.state = {...props};
+    this.state = { ...props };
     this.plugins = this.props.plugins || DEFAULT_PLUGINS;
-    this.fakeAux = cp(this.plugins.slice(0,2));
-    this.fakePlugins = this.fakeAux.concat(this.plugins.slice(0,2));
-    for(let i=0; i<4; i++){
+    this.fakeAux = cp(this.plugins.slice(0, 2));
+    this.fakePlugins = this.fakeAux.concat(this.plugins.slice(0, 2));
+    for (let i = 0; i < 4; i++) {
       this.fakePlugins[i].type = "plugin" + i;
     }
     this.maxSidebarButtons = 3;
-    this.modalOptions = {width: 500, height: 300};
+    this.modalOptions = { width: 500, height: 300 };
+    this.editorHasFocus = true;
     this.onChange = ::this.onChange;
   }
 
   onChange(editorState) {
-    this.setState({editorState: editorState});
+    this.setState({ editorState: editorState });
   }
 
   render() {
@@ -75,178 +74,179 @@ class SidebarWithModalWrapper extends Component {
           readOnly={this.props.readOnly}
           onChange={this.onChange}
           maxSidebarButtons={this.maxSidebarButtons}
-          modalOptions={this.modalOptions}/>
+          modalOptions={this.modalOptions}
+          editorHasFocus={this.editorHasFocus}
+        />
       </div>
     );
   }
 }
 
-describe("Sidebar Component", function() {
-  beforeEach(function() {
+describe("Sidebar Component", () => {
+  let editorState, wrapper, wrapperSidebarModal;
+  beforeEach(() => {
     const INITIAL_CONTENT = {
-      "entityMap": {},
-      "blocks": [
+      entityMap: {},
+      blocks: [
         {
-          "key": "ag6qs",
-          "text": "Hello World!",
-          "type": "unstyled",
-          "depth": 0,
-          "inlineStyleRanges": [],
-          "entityRanges": []
+          key: "ag6qs",
+          text: "Hello World!",
+          type: "unstyled",
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: []
         }
       ]
     };
 
-    this.editorState = editorStateFromRaw(INITIAL_CONTENT);
-    this.wrapper = mount(
-      <SidebarWrapper editorState={this.editorState}/>
-    );
-    this.wrapperSidebarModal = mount(
-      <SidebarWithModalWrapper editorState={this.editorState}/>
+    editorState = editorStateFromRaw(INITIAL_CONTENT);
+    wrapper = mount(<SidebarWrapper editorState={editorState} />);
+    wrapperSidebarModal = mount(
+      <SidebarWithModalWrapper editorState={editorState} />
     );
   });
 
-  it("renders correctly on the page", function() {
-    const sidebar = this.wrapper.find(Sidebar);
-    expect(sidebar).to.have.length(1);
-    expect(sidebar.html()).not.to.be.null;
+  it("renders correctly on the page", () => {
+    const sidebar = wrapper.find(Sidebar);
+    expect(sidebar).toHaveLength(1);
+    expect(sidebar.html()).not.toBeNull();
   });
 
-  it("renders as null when readOnly is set", function() {
+  it("renders as null when readOnly is set", () => {
     const wrapper = mount(
-      <SidebarWrapper readOnly editorState={this.editorState}/>
+      <SidebarWrapper readOnly editorState={editorState} />
     );
     const sidebar = wrapper.find(Sidebar);
-    expect(sidebar.html()).to.be.null;
+    expect(sidebar.html()).toBeNull();
   });
 
-  it("renders enabled plugins", function() {
-    const button = this.wrapper.find(image.buttonComponent);
-    expect(button).to.have.length(1);
+  it("renders enabled plugins", () => {
+    const button = wrapper.find(image.buttonComponent);
+    expect(button).toHaveLength(1);
   });
 
-  it("renders only valid plugins", function() {
+  it("renders only valid plugins", () => {
     const invalidPlugin = {
       type: "invalid-plugin",
       blockComponent: {}
     };
     const plugins = [image, invalidPlugin];
     const wrapper = mount(
-      <SidebarWrapper editorState={this.editorState} plugins={plugins} />
+      <SidebarWrapper editorState={editorState} plugins={plugins} />
     );
     const sidemenu = wrapper.find(SideMenu);
-    expect(sidemenu.prop("plugins")).to.have.length(1);
+    expect(sidemenu.prop("plugins")).toHaveLength(1);
   });
 
-  it("has the menu hidden by default", function() {
-    const menu = this.wrapper.find(SideMenu);
+  it("has the menu hidden by default", () => {
+    const menu = wrapper.find(SideMenu);
     const domMenu = menu.find("button").at(0);
-    expect(domMenu.hasClass("sidemenu__items--open")).to.be.false;
+    expect(domMenu.hasClass("sidemenu__items--open")).toBeFalsy();
   });
 
-  it("opens the menu on click", function() {
-    const toggleButton = this.wrapper.find(ToggleButton);
+  it("opens the menu on click", () => {
+    const toggleButton = wrapper.find(ToggleButton);
     const domButton = toggleButton.find("button");
 
     domButton.simulate("click");
 
-    const menu = this.wrapper.find(SideMenu);
+    const menu = wrapper.find(SideMenu);
     const domMenu = menu.find("button").at(0);
-    expect(domMenu.hasClass("sidemenu__button--open")).to.be.true;
+    expect(domMenu.hasClass("sidemenu__button--open")).toBeTruthy();
   });
 
-  it("is possible to click on the button", function() {
-    const toggleButton = this.wrapper.find(ImageButton);
+  it("is possible to click on the button", () => {
+    const toggleButton = wrapper.find(ImageButton);
     const domButton = toggleButton.find("button");
 
     window.prompt = () => "http://www.globo.com";
     domButton.simulate("click");
 
-    const contentState = this.wrapper.state("editorState").getCurrentContent();
+    const contentState = wrapper.state("editorState").getCurrentContent();
     let data = null;
-    contentState.getBlockMap().forEach((block) => {
+    contentState.getBlockMap().forEach(block => {
       if (block.getType() === "atomic") {
         data = block.getData();
       }
     });
-    expect(data.get("src")).to.be.equal("http://www.globo.com");
+    expect(data.get("src")).toEqual("http://www.globo.com");
   });
 
-  it("should has a modal button when there is 4 plugins", function() {
-    const toggleButton = this.wrapperSidebarModal.find(ToggleButton);
+  it("should have a modal button when there is 4 plugins", () => {
+    const toggleButton = wrapperSidebarModal.find(ToggleButton);
     const domButton = toggleButton.find("button");
 
     domButton.simulate("click");
 
-    const menu = this.wrapperSidebarModal.find(SideMenu);
+    const menu = wrapperSidebarModal.find(SideMenu);
     const domMenu = menu.find("button");
     const domModalButton = domMenu.at(4);
     domModalButton.simulate("click");
 
-    const modal = this.wrapperSidebarModal.find(PluginsModal);
+    const modal = wrapperSidebarModal.find(PluginsModal);
     const domModal = modal.find("Modal");
-    expect(domModal.prop("className")).to.be.equal("megadraft-modal");
+    expect(domModal.prop("className")).toEqual("megadraft-modal");
   });
 
-  it("should not have a modal button with less than 4 plugins", function() {
-    const toggleButton = this.wrapper.find(ToggleButton);
+  it("should not have a modal button with less than 4 plugins", () => {
+    const toggleButton = wrapper.find(ToggleButton);
     const domButton = toggleButton.find("button");
 
     domButton.simulate("click");
 
-    const menu = this.wrapper.find(SideMenu);
+    const menu = wrapper.find(SideMenu);
     const domMenu = menu.find("button");
     const domModalButton = domMenu.at(4);
 
-    expect(domModalButton.component).to.be.equal(null);
+    expect(domModalButton.exists()).toBeFalsy();
   });
 
-  it("should has plugins in modal if it's avaiable", function() {
-    const toggleButton = this.wrapperSidebarModal.find(ToggleButton);
+  it("should has plugins in modal if it's avaiable", () => {
+    const toggleButton = wrapperSidebarModal.find(ToggleButton);
     const domButton = toggleButton.find("button");
 
     domButton.simulate("click");
 
-    const menu = this.wrapperSidebarModal.find(SideMenu);
+    const menu = wrapperSidebarModal.find(SideMenu);
     const domMenu = menu.find("button");
     const domModalButton = domMenu.at(4);
 
     domModalButton.simulate("click");
 
-    const modal = this.wrapperSidebarModal.find(PluginsModal);
+    const modal = wrapperSidebarModal.find(PluginsModal);
     const items = modal.prop("plugins").length;
-    expect(items).to.be.at.least(1);
+    expect(items).toBeGreaterThanOrEqual(1);
   });
 
-  it("should has modal with props width", function() {
-    const toggleButton = this.wrapperSidebarModal.find(ToggleButton);
+  it("should has modal with props width", () => {
+    const toggleButton = wrapperSidebarModal.find(ToggleButton);
     const domButton = toggleButton.find("button");
     domButton.simulate("click");
 
-    const menu = this.wrapperSidebarModal.find(SideMenu);
+    const menu = wrapperSidebarModal.find(SideMenu);
     const domMenu = menu.find("button");
     const domModalButton = domMenu.at(4);
 
     domModalButton.simulate("click");
-    const modal = this.wrapperSidebarModal.find(PluginsModal);
+    const modal = wrapperSidebarModal.find(PluginsModal);
     const domModal = modal.find("Modal");
 
-    expect(domModal.prop("width")).to.be.exist;
+    expect(domModal.prop("width")).toBeDefined();
   });
 
-  it("should has modal with props width", function() {
-    const toggleButton = this.wrapperSidebarModal.find(ToggleButton);
+  it("should has modal with props height", () => {
+    const toggleButton = wrapperSidebarModal.find(ToggleButton);
     const domButton = toggleButton.find("button");
     domButton.simulate("click");
 
-    const menu = this.wrapperSidebarModal.find(SideMenu);
+    const menu = wrapperSidebarModal.find(SideMenu);
     const domMenu = menu.find("button");
     const domModalButton = domMenu.at(4);
-    domModalButton.simulate("click");
 
-    const modal = this.wrapperSidebarModal.find(PluginsModal);
+    domModalButton.simulate("click");
+    const modal = wrapperSidebarModal.find(PluginsModal);
     const domModal = modal.find("Modal");
 
-    expect(domModal.prop("height")).to.be.exist;
+    expect(domModal.prop("height")).toBeDefined();
   });
 });

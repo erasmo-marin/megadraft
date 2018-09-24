@@ -9,8 +9,8 @@
 }
 
 .block__hover:hover {
-  -webkit-box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
-          box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0), 0 4px 8px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0), 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .block__wrapper {

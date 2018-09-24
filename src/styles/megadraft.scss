@@ -10,6 +10,7 @@
   all: unset;
 }
 
+@import "_mixins.scss";
 @import "modal.scss";
 
 .megadraft-editor {

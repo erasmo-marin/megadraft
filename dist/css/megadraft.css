@@ -11,6 +11,11 @@
 }
 
 /*
+ * Copyright (c) 2018, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
+/*
  * Copyright (c) 2016, Globo.com (https://github.com/globocom)
  *
  * License: MIT
@@ -143,6 +148,11 @@
  */
   /*
  * Copyright (c) 2016, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
+  /*
+ * Copyright (c) 2018, Globo.com (https://github.com/globocom)
  *
  * License: MIT
  */
@@ -494,6 +504,22 @@
   color: #FFF;
 }
 
+.megadraft-editor .toolbar--error ::-webkit-input-placeholder {
+  color: #FFF;
+}
+
+.megadraft-editor .toolbar--error :-moz-placeholder {
+  color: #FFF;
+}
+
+.megadraft-editor .toolbar--error ::-moz-placeholder {
+  color: #FFF;
+}
+
+.megadraft-editor .toolbar--error :-ms-input-placeholder {
+  color: #FFF;
+}
+
 .megadraft-editor .toolbar__wrapper {
   -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
           box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
@@ -622,8 +648,8 @@
 }
 
 .megadraft-editor .block__hover:hover {
-  -webkit-box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
-          box-shadow: 0 5px 10px transparent, 0 4px 8px rgba(0, 0, 0, 0.15);
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0), 0 4px 8px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, 0), 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .megadraft-editor .block__wrapper {

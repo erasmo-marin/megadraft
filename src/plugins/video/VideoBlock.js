@@ -4,7 +4,7 @@
  * License: MIT
  */
 
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import {
   BlockContent,
@@ -17,7 +17,6 @@ import icons from "../../icons";
 
 import VideoBlockStyle from "./VideoBlockStyle";
 
-
 export default class VideoBlock extends Component {
   constructor(props) {
     super(props);
@@ -25,12 +24,16 @@ export default class VideoBlock extends Component {
     this._handleCaptionChange = ::this._handleCaptionChange;
 
     this.actions = [
-      {"key": "delete", "icon": icons.DeleteIcon, "action": this.props.container.remove}
+      {
+        key: "delete",
+        icon: icons.DeleteIcon,
+        action: this.props.container.remove
+      }
     ];
   }
 
   _handleCaptionChange(event) {
-    this.props.container.updateData({caption: event.target.value});
+    this.props.container.updateData({ caption: event.target.value });
   }
 
   _getYoutubeId(url) {
@@ -79,7 +82,8 @@ export default class VideoBlock extends Component {
           <BlockInput
             placeholder="Caption"
             value={this.props.data.caption}
-            onChange={this._handleCaptionChange} />
+            onChange={this._handleCaptionChange}
+          />
         </BlockData>
       </CommonBlock>
     );

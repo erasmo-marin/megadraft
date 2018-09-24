@@ -30,6 +30,9 @@ Here are the props that `MegadraftEditor` accepts:
   Check the following sections for more info.
 - `shouldDisplayToolbarFn`: (optional) Boolean-valued function fired when
   editor state changes. It allows to control whether or not the Toolbar should be shown.
+- `language`: (optional) Changes the language. This is a string like xx-YY,
+  where xx is a language code and YY is a country code. See [Megadraft strings][i18n-strings].
+- `hideSidebarOnBlur`: (optional) boolean, default false. Hide Sidebar on blur.
 
 Check the following sections for more info.
 
@@ -49,15 +52,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: editorStateFromRaw(null)};
-    this.onChange = ::this.onChange;
-    this.getCustomSidebar = ::this.getCustomSidebar;
   }
 
-  onChange(editorState) {
+  onChange = (editorState) => {
     this.setState({editorState});
   }
 
-  getCustomSidebar(props) {
+  getCustomSidebar = (props) => {
     return <CustomSidebar {...props} />
   }
 
@@ -97,15 +98,15 @@ Example: Add an underline action.
 import React from "react";
 import ReactDOM from "react-dom";
 import {MegadraftEditor, editorStateFromRaw} from "megadraft";
+import actions from "megadraft/lib/actions/default"
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: editorStateFromRaw(null)};
-    this.onChange = ::this.onChange;
   }
 
-  onChange(editorState) {
+  onChange = (editorState) =>  {
     this.setState({editorState});
   }
 
@@ -202,13 +203,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: editorStateFromRaw(null)};
-    this.onChange = ::this.onChange;
     this.keyBindings = [
         { name: "save", isKeyBound: (e) => { return e.keyCode === 83 && e.ctrlKey; }, action: () => { this.onSave(); } }
     ];
   }
 
-  onChange(editorState) {
+  onChange = (editorState) => {
     this.setState({editorState});
   }
 
@@ -278,10 +278,9 @@ class App extends React.Component {
         }
       ]
     })};
-    this.onChange = ::this.onChange;
   }
 
-  onChange(editorState) {
+  onChange = (editorState) => {
     this.setState({editorState});
   }
 
@@ -334,12 +333,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {editorState: editorStateFromRaw(null)};
-    this.onChange = ::this.onChange;
     this.maxSidebarButtons = 3;
     this.modalOptions = {width:528, height:393};
   }
 
-  onChange(editorState) {
+  onChange = (editorState) => {
     this.setState({editorState});
   }
 
@@ -362,3 +360,4 @@ ReactDOM.render(
 
 [api-reference-editor-state]: https://facebook.github.io/draft-js/docs/api-reference-editor-state.html
 [custom actions]: https://github.com/globocom/megadraft/blob/master/src/actions/default.js
+[i18n-strings]: https://github.com/globocom/megadraft/blob/master/src/i18n.js

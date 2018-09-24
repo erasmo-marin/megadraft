@@ -27,7 +27,6 @@ import CloseIcon from "./icons/close";
 import TwitterIcon from "./icons/twitter";
 import MoreIcon from "./icons/more";
 
-
 const icons = {
   BoldIcon, ItalicIcon, ULIcon, OLIcon, H2Icon, BlockQuoteIcon, LinkIcon,
   CrossIcon, ImageIcon, VideoIcon, EditIcon, DeleteIcon, CropIcon, MediaBigIcon,

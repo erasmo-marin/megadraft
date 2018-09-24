@@ -3,6 +3,11 @@
  *
  * License: MIT
  */
+/*
+ * Copyright (c) 2018, Globo.com (https://github.com/globocom)
+ *
+ * License: MIT
+ */
 .toolbar {
   background: yellow;
   height: 0;
@@ -44,6 +49,22 @@
 }
 
 .toolbar--error .toolbar__button {
+  color: #FFF;
+}
+
+.toolbar--error ::-webkit-input-placeholder {
+  color: #FFF;
+}
+
+.toolbar--error :-moz-placeholder {
+  color: #FFF;
+}
+
+.toolbar--error ::-moz-placeholder {
+  color: #FFF;
+}
+
+.toolbar--error :-ms-input-placeholder {
   color: #FFF;
 }
 

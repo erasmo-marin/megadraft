@@ -5,6 +5,8 @@
  * License: MIT
  */
 
+@import "_mixins.scss";
+
 .toolbar {
     background: yellow;
     height: 0;
@@ -40,6 +42,9 @@
         height: 28px;
       }
       .toolbar__button {
+        color: #FFF;
+      }
+      @include placeholder {
         color: #FFF;
       }
     }

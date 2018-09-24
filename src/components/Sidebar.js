@@ -83,7 +83,7 @@ class BlockStyles extends Component {
       ? this.props.maxSidebarButtons
       : this.props.plugins.length;
 
-    let width = this.props.open ? ((maxSidebarButtons + 1) * 25) : 0;
+    let width = this.props.open ? (maxSidebarButtons + 1) * 25 : 0;
 
     const sidemenuMaxHeight = {
       maxHeight: this.props.open ? `${(maxSidebarButtons + 1) * 48}px` : 0

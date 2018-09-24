@@ -39,7 +39,7 @@ import notFoundPlugin from "../plugins/not-found/plugin";
 import DEFAULT_PLUGINS from "../plugins/default";
 import DEFAULT_ACTIONS from "../actions/default";
 import DEFAULT_ENTITY_INPUTS from "../entity_inputs/default";
-import Draft from 'draft-js';
+import Draft from "draft-js";
 
 const NO_RESET_STYLE_DEFAULT = ["ordered-list-item", "unordered-list-item"];
 
@@ -83,23 +83,25 @@ export default class MegadraftEditor extends Component {
     this.keyBindings = this.props.keyBindings || [];
 
     const blockRenderMap = Immutable.Map({
-        'header-1': {
-            element: 'h1'
-        },
-        'header-2': {
-            element: 'h2'
-        },
-        'header-3': {
-            element: 'h3'
-        },
-        'header-4': {
-            element: 'h4'
-        },
-        'header-5': {
-            element: 'h5'
-        }
+      "header-1": {
+        element: "h1"
+      },
+      "header-2": {
+        element: "h2"
+      },
+      "header-3": {
+        element: "h3"
+      },
+      "header-4": {
+        element: "h4"
+      },
+      "header-5": {
+        element: "h5"
+      }
     });
-    this.extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(blockRenderMap);
+    this.extendedBlockRenderMap = Draft.DefaultDraftBlockRenderMap.merge(
+      blockRenderMap
+    );
   }
 
   getValidPlugins() {
@@ -420,7 +422,9 @@ export default class MegadraftEditor extends Component {
           <div
             className="megadraft-editor"
             id="megadraft-editor"
-            ref={(el) => { this.editorEl = el; }}
+            ref={el => {
+              this.editorEl = el;
+            }}
             onBlur={this.handleBlur}
             onFocus={this.handleFocus}
           >
@@ -436,7 +440,9 @@ export default class MegadraftEditor extends Component {
             })}
             <Editor
               {...this.props}
-              ref={(el) => { this.draftEl = el; }}
+              ref={el => {
+                this.draftEl = el;
+              }}
               readOnly={this.state.readOnly}
               plugins={this.plugins}
               blockRendererFn={this.mediaBlockRenderer}
@@ -456,7 +462,7 @@ export default class MegadraftEditor extends Component {
               onChange: this.onChange,
               actions: this.props.actions,
               entityInputs: this.entityInputs,
-              shouldDisplayToolbarFn: this.props.shouldDisplayToolbarFn,
+              shouldDisplayToolbarFn: this.props.shouldDisplayToolbarFn
             })}
           </div>
         </div>

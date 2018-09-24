@@ -28,10 +28,28 @@ import TwitterIcon from "./icons/twitter";
 import MoreIcon from "./icons/more";
 
 const icons = {
-  BoldIcon, ItalicIcon, ULIcon, OLIcon, H2Icon, BlockQuoteIcon, LinkIcon,
-  CrossIcon, ImageIcon, VideoIcon, EditIcon, DeleteIcon, CropIcon, MediaBigIcon,
-  MediaMediumIcon, MediaSmallIcon, DropdownArrow, ErrorIcon, UnlinkIcon,
-  CloseIcon, TwitterIcon, MoreIcon
+  BoldIcon,
+  ItalicIcon,
+  ULIcon,
+  OLIcon,
+  H2Icon,
+  BlockQuoteIcon,
+  LinkIcon,
+  CrossIcon,
+  ImageIcon,
+  VideoIcon,
+  EditIcon,
+  DeleteIcon,
+  CropIcon,
+  MediaBigIcon,
+  MediaMediumIcon,
+  MediaSmallIcon,
+  DropdownArrow,
+  ErrorIcon,
+  UnlinkIcon,
+  CloseIcon,
+  TwitterIcon,
+  MoreIcon
 };
 
 export default icons;

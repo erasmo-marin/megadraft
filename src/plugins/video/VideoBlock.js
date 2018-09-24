@@ -37,31 +37,33 @@ export default class VideoBlock extends Component {
   }
 
   _getYoutubeId(url) {
-      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-      const match = url.match(regExp);
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
 
-      if (match && match[2].length == 11) {
-          return match[2];
-      } else {
-          return false;
-      }
+    if (match && match[2].length == 11) {
+      return match[2];
+    } else {
+      return false;
+    }
   }
 
   renderYoutubeElement(url) {
     let videoId = this._getYoutubeId(url);
 
-    return (<div className="block__content__videoContainer">
-              <iframe
-                src={`https://www.youtube.com/embed/${videoId}`}
-                className="block__content__videoContainer__youtube"
-              />
-            </div>
-            );
+    return (
+      <div className="block__content__videoContainer">
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}`}
+          className="block__content__videoContainer__youtube"
+        />
+      </div>
+    );
   }
 
   isYoutubeUrl(url) {
-    if(url.indexOf("youtube.com") || url.indexOf("youtu.be"))
+    if (url.indexOf("youtube.com") || url.indexOf("youtu.be")) {
       return true;
+    }
     return false;
   }
 
@@ -71,10 +73,15 @@ export default class VideoBlock extends Component {
         <BlockContent>
           <Choose>
             <When condition={this.isYoutubeUrl(this.props.data.src)}>
-              { this.renderYoutubeElement(this.props.data.src) }
+              {this.renderYoutubeElement(this.props.data.src)}
             </When>
             <Otherwise>
-              <video controls style={VideoBlockStyle.video} src={this.props.data.src} alt=""/>
+              <video
+                controls
+                style={VideoBlockStyle.video}
+                src={this.props.data.src}
+                alt=""
+              />
             </Otherwise>
           </Choose>
         </BlockContent>

@@ -84,39 +84,7 @@
     "lint": "eslint ./*.js src tests website",
     "lint:watch": "esw -w src tests website",
     "watch": "babel -d lib/ src/ --watch",
-    "precommit": "lint-staged",
     "eslint-check": "eslint --print-config .eslintrc.json | eslint-config-prettier-check"
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
-    ],
-    "coveragePathIgnorePatterns": [
-      "src/icons"
-    ],
-    "testMatch": [
-      "**/tests/**/*_test.js?(x)"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>[/\\\\](build|lib|docs|node_modules|scripts)[/\\\\]"
-    ],
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest",
-      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/tests/helpers/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
-    ],
-    "setupFiles": [
-      "<rootDir>/tests/helpers/setup.js"
-    ]
   },
   "repository": {
     "type": "git",

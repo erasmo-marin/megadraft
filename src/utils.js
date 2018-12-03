@@ -91,6 +91,8 @@ export function getSelectionCoords(editor, toolbar) {
     }
   }
 
+  console.log({ offsetLeft, offsetTop, arrowStyle });
+
   return { offsetLeft, offsetTop, arrowStyle };
 }
 
